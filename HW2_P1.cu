@@ -69,7 +69,7 @@ __global__ void reduceBlksKernel1(int * in, int * out, int n)
 __global__ void reduceBlksKernel2(int * in, int * out,int n)
 {
 	int numElemsBeforeBlk = blockIdx.x * blockDim.x * 2;
-    for (int stride = 1; stride <= 2 * blockDim.x; stride *= 2) {
+    for (int stride = 1; stride < 2 * blockDim.x; stride *= 2) {
         int i = numElemsBeforeBlk + threadIdx.x * stride * 2;
         if ((threadIdx.x + 1) * stride <= blockDim.x) {
             if (i + stride < n) {
