@@ -59,8 +59,8 @@ __global__ void matrix_multiplication_kernel1(float* A, float* B, float* C, int 
         for (int i = 0; i < n; ++i) {
             C_rc += A[r * n + i] * B[i * k + c];
         }
+        C[r * k + c] = C_rc;
     }
-    C[r * k + c] = C_rc;
 }
 
 __global__ void matrix_multiplication_kernel2(float* A, float* B, float* C, int m, int n, int k)
@@ -86,7 +86,7 @@ __global__ void matrix_multiplication_kernel2(float* A, float* B, float* C, int 
         __syncthreads();
     }
 
-    C[r * k + c] = C_rc;
+    if (r < m && c < k) C[r * k + c] = C_rc;
 }
 
 void matrix_multiplication(float* A, float* B, float* C, int m, int n, int k,
